@@ -13,6 +13,7 @@ const Menu = () => {
             <Toolbar sx={{}} disableGutters>
                 <ButtonRouter text='Home' href={'/cowriter/'}/>
                 {/* <ButtonRouter text='Login' href={'/login'}/> */}
+                <ButtonRouter text='How To' href={'/cowriter/howto'}/>
                 <ButtonRouter text='About' href={'/cowriter/about'}/>
             </Toolbar>
         </Box>
