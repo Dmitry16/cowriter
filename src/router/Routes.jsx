@@ -7,9 +7,9 @@ import About from '../pages/About';
 const AppRoutes = () => {
     return (
         <Routes>
-            <Route index path="/mimas-tek/" element={<Home />} />
+            <Route index path="/cowriter/" element={<Home />} />
             {/* <Route path="/life-strategy/login" element={<Login />} /> */}
-            <Route path="/mimas-tek/about" element={<About />} />
+            <Route path="/cowriter/about" element={<About />} />
         </Routes>
     );
 };

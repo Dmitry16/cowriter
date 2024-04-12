@@ -11,9 +11,9 @@ const Menu = () => {
             justifyContent: 'center',
         }}>
             <Toolbar sx={{}} disableGutters>
-                <ButtonRouter text='Home' href={'/mimas-tek/'}/>
+                <ButtonRouter text='Home' href={'/cowriter/'}/>
                 {/* <ButtonRouter text='Login' href={'/login'}/> */}
-                <ButtonRouter text='About' href={'/mimas-tek/about'}/>
+                <ButtonRouter text='About' href={'/cowriter/about'}/>
             </Toolbar>
         </Box>
     );
