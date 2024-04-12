@@ -1,0 +1,18 @@
+/dist
+/node_modules
+/coverage
+public/documents
+public/config.json
+.npmrc
+junit.xml
+
+# Avoid swap files
+*.swp
+
+# Avoid local config
+/config/*local*
+
+.DS_Store
+esbuild.analyze.txt
+.idea
+.vscode
