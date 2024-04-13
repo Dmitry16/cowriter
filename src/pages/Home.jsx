@@ -7,6 +7,8 @@ import { styled } from '@mui/material/styles';
 import useDialog from '../hooks/useDialog';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import UnderConstruction from '../components/UnderConstruction';
+import EditorControls from '../components/editor/EditorControls';
+import Editor from '../components/editor/Editor';
 
 const StyledListItem = styled(ListItem)(({ theme }) => ({
     color: theme.palette.text.darkBlue,
@@ -16,7 +18,10 @@ const Home = () => {
     const [DialogComponent, openDialog] = useDialog();
 
     return (
-        <UnderConstruction />
+        <Box sx={{}}>
+            <EditorControls />
+            <Editor />
+        </Box>
     );
 };
 
