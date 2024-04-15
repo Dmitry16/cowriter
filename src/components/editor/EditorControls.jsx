@@ -28,7 +28,7 @@ const EditorControls = () => {
                     Select a theme
                 </Typography>
                 <Typography variant="h5" component="h1" color="text.darkBlue">
-                    Select a style
+                    Select an author style
                 </Typography>
             </Stack>
         </Box>
