@@ -2,7 +2,7 @@ import React from 'react'
 import { Color } from '@tiptap/extension-color'
 import ListItem from '@tiptap/extension-list-item'
 import TextStyle from '@tiptap/extension-text-style'
-import { EditorProvider, useCurrentEditor } from '@tiptap/react'
+import { EditorContent, EditorProvider, useCurrentEditor, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { Box } from '@mui/material'
 import './styles.scss'
@@ -13,6 +13,8 @@ const MenuBar = () => {
   if (!editor) {
     return null
   }
+
+  console.log('editor.isActive::::', editor.isActive('bold'));
 
   return (
     <>
@@ -180,20 +182,20 @@ const MenuBar = () => {
   )
 }
 
-const extensions = [
-  Color.configure({ types: [TextStyle.name, ListItem.name] }),
-  TextStyle.configure({ types: [ListItem.name] }),
-  StarterKit.configure({
-    bulletList: {
-      keepMarks: true,
-      keepAttributes: false,
-    },
-    orderedList: {
-      keepMarks: true,
-      keepAttributes: false,
-    },
-  }),
-]
+// const extensions = [
+//   Color.configure({ types: [TextStyle.name, ListItem.name] }),
+//   TextStyle.configure({ types: [ListItem.name] }),
+//   StarterKit.configure({
+//     bulletList: {
+//       keepMarks: true,
+//       keepAttributes: false,
+//     },
+//     orderedList: {
+//       keepMarks: true,
+//       keepAttributes: false,
+//     },
+//   }),
+// ]
 
 // const content = `
 // <h2>
@@ -227,11 +229,30 @@ const extensions = [
 // `
 
 const content = '';
+const extensions = [
+  Color.configure({ types: [TextStyle.name, ListItem.name] }),
+  TextStyle.configure({ types: [ListItem.name] }),
+  StarterKit.configure({
+    bulletList: {
+      keepMarks: true,
+      keepAttributes: false,
+    },
+    orderedList: {
+      keepMarks: true,
+      keepAttributes: false,
+    },
+  }),
+];
 
 export default () => {
+    const editor = useEditor({
+        extensions: extensions,
+        content: content,
+    });
+
   return (
-    <Box sx={{m: 2, border: '1px solid blue'}}>
-        <EditorProvider slotBefore={<MenuBar />} extensions={extensions} content={content}></EditorProvider>
+    <Box sx={{m: 2}}>
+        <EditorProvider slotBefore={<MenuBar />} editor={editor} extensions={extensions} />
     </Box>
   )
 };
