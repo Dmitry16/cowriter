@@ -12,11 +12,13 @@
     "@emotion/styled": "latest",
     "@mui/icons-material": "^5.15.5",
     "@mui/material": "latest",
+    "@tiptap/core": "^2.3.0",
     "@tiptap/extension-color": "^2.3.0",
     "@tiptap/extension-list-item": "^2.3.0",
     "@tiptap/extension-text-style": "^2.3.0",
     "@tiptap/react": "^2.3.0",
     "@tiptap/starter-kit": "^2.3.0",
+    "lodash": "^4.17.21",
     "react": "latest",
     "react-dom": "latest",
     "react-router-dom": "^6.21.3"
