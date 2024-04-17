@@ -9,6 +9,7 @@ import ConstructionIcon from '@mui/icons-material/Construction';
 import UnderConstruction from '../components/UnderConstruction';
 import EditorControls from '../components/editor/EditorControls';
 import Editor from '../components/editor/Editor';
+import Completions from '../components/Completions';
 
 const StyledListItem = styled(ListItem)(({ theme }) => ({
     color: theme.palette.text.darkBlue,
@@ -20,6 +21,7 @@ const Home = () => {
     return (
         <Box sx={{}}>
             <EditorControls />
+            <Completions />
             <Editor />
         </Box>
     );
