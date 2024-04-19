@@ -18,11 +18,11 @@ const Completions = () => {
     const { state, setState } = useContext(CoWriterContext);
 
     const handleClick = (event) => {
-        console.log('Completions:::state.text:::', state.text);
+        // console.log('Completions:::state.text:::', state.completions);
         setState({
             ...state,
             completions: [],
-            text: state.text + event.target.innerText,
+            content: state.content + ' ' + event.target.innerText,
         });
     };
 

@@ -2,10 +2,12 @@ import React from "react";
 import { useCurrentEditor } from '@tiptap/react'
 
 
-const MenuBar = () => {
-  const { editor } = useCurrentEditor()
+// const MenuBar = () => {
+const MenuBar = ({editor}) => {
+  // const { editor } = useCurrentEditor()
 
   if (!editor) {
+    console.error('No editor provided');
     return null
   }
 

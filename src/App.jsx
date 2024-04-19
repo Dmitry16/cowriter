@@ -4,9 +4,7 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 
 import { CoWriterContext } from './context';
-import Content from './components/Content';
 import Footer from './components/Footer';
-import Header from './components/Header';
 import Menu from './components/Menu';
 import Routes from './router/Routes';
 
