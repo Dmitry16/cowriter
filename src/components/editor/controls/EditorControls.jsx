@@ -1,24 +1,10 @@
 import React, { useState, useContext } from 'react';
-// import { Box, Stack, Typography, List, ListItem, ListItemText, ListItemButton,
-//     Accordion, AccordionSummary, AccordionDetails,
-// } from '@mui/material';
-import { Box, Typography, ListItem, Tabs, Tab, FormControl, InputLabel, Select, MenuItem, Switch } from '@mui/material';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { styled } from '@mui/material/styles';
-import useDialog from '../../hooks/useDialog';
-import { CoWriterContext } from '../../context';
-
-const StyledListItem = styled(ListItem)(({ theme }) => ({
-    color: theme.palette.text.darkBlue,
-}));
+import { Box, Typography, Tabs, Tab, FormControl, InputLabel, Select, MenuItem, Switch } from '@mui/material';
+import { CoWriterContext } from '../../../context';
 
 const EditorControls = () => {
     const { state, setState } = useContext(CoWriterContext);
-    // const [DialogComponent, openDialog] = useDialog();
-
-        console.log('EditorControls:::state:enableAI::', state.enableAI);
-
-    
+        // console.log('EditorControls:::state:enableAI::', state.enableAI); 
     const [selectedTab, setSelectedTab] = useState('genres');
     
     const handleTabChange = (event, newValue) => {
