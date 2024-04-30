@@ -1,37 +1,25 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 
+import { debounce, set } from 'lodash'
+import { Box, Typography } from '@mui/material'
 import { Color } from '@tiptap/extension-color'
 import ListItem from '@tiptap/extension-list-item'
 import TextStyle from '@tiptap/extension-text-style'
-import { EditorProvider, useEditor } from '@tiptap/react'
-import { Extension } from '@tiptap/core'
+import { EditorContent, useEditor } from '@tiptap/react'
+// import { Extension } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
 
-import { debounce, set } from 'lodash'
-
-import { Box } from '@mui/material'
 import MenuBar from './MenuBar'
+import { CoWriterContext } from '../../context'
+import { fetchOpenAI } from '../../api/openAI/fetchOpenAI'
 import './styles.scss'
 
 export const Editor = () => {
+    const { state, setState } = useContext(CoWriterContext);
+    const [firstEditorUpdate, setFirstEditorUpdate] = useState(true);
     const [content, setContent] = useState('');
 
-    const debouncedSave = debounce((content) => {
-        setContent(content);
-    }, 2000);
-
-    // send content to API
-    useEffect(() => {
-        console.log('Saving content:', content);
-    }, [content]);
-
-    const CustomExtension = Extension.create({
-        onUpdate: ({ editor }) => {
-            // console.log('CustomExtension:::editor:::', editor.getText());
-            // setContent(editor.getText());
-            debouncedSave(editor.getText());
-        }
-    });
+    // console.log('Editor:::state:::', state);
 
     const extensions = [
         Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -46,17 +34,95 @@ export const Editor = () => {
                 keepAttributes: false,
             },
         }),
-        CustomExtension,
     ];
 
     const editor = useEditor({
         extensions: extensions,
-        content: '',
+        content: state.content,
+        onFocus({ editor }) {
+            if (firstEditorUpdate) {
+                editor.commands.setContent('');
+                setState({
+                    ...state,
+                    content: content,
+                });
+                setFirstEditorUpdate(false);
+            }
+        },
+        onUpdate({ editor }) {
+        //    console.log('Editor:::editor:::', editor.getText());
+            //   setState({
+            //     ...state,
+            //     content: editor.getText(),
+            //   });
+            debounce(() => {
+                setContent(editor.getText());
+                // setState({
+                //     ...state,
+                //     content: editor.getText(),
+                // });
+            }, 2000)(); 
+        },
     });
+
+    const { selectedGenre: genre, selectedTheme: theme, selectedStyle: style, enableAI } = state; 
+
+    useEffect(() => {
+        if (content === '' || firstEditorUpdate || state.content === content) {
+            return;
+        }
+
+        setState({
+            ...state,
+            content: editor.getText(),
+        });
+
+        // console.log('API response:', response);
+
+        enableAI && fetchOpenAI(content, genre, theme, style)
+            .then((response) => {
+                // console.log('API response:', response);
+                // setCompletion(response.choices[0].message.content);
+                // setContent(response.choices[0].message.content);
+                setState({
+                    ...state,
+                    completions: response.choices[0].message.content.split('\n'),
+                })
+            })
+            .catch((error) => {
+                console.error('API error:', error);
+            });
+
+    }, [content]);
+
+    useEffect(() => {
+        if (state.content === content) {
+            return;
+        }
+
+        // console.log('Editor::UseEffect::state.content::', state.content);
+
+        editor?.commands.setContent(state.content);
+
+        // setState({
+        //     ...state,
+        //     content: content,
+        // });
+
+    }, [state.content]);
+
+    if (!editor) {
+        return null;
+    };
 
   return (
     <Box sx={{m: 2}}>
-        <EditorProvider slotBefore={<MenuBar />} editor={editor} extensions={extensions} />
+        <Typography sx={{m:2}} variant="h5" component="h1" color="text.darkBlue">
+            {`Genre: ${state.selectedGenre}, Theme: ${state.selectedTheme}, Style: ${state.selectedStyle}`}
+        </Typography>
+        {/* <MenuBar /> */}
+        <MenuBar editor={editor} />
+        <EditorContent editor={editor} />
     </Box>
   );
 };

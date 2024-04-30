@@ -6,6 +6,8 @@ public/config.json
 .npmrc
 junit.xml
 
+.env.local
+
 # Avoid swap files
 *.swp
 
