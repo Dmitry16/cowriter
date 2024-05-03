@@ -41,7 +41,7 @@ const EditorControls = () => {
                 </Tabs>
                 <Box sx={{ mt: 2, display: 'flex' }}>
                     <Typography sx={{pt:1}} variant="body1" component="h1" color="text.darkBlue">
-                        Enable AI
+                        Enable AI Completions
                     </Typography>
                     <Switch
                         checked={state.enableAI}

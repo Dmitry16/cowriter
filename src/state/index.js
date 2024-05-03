@@ -1,3 +1,5 @@
+import { editorDefaults } from "../constants/editorDefaults";
+
 export const initialState = {
     genres: [
         'essay',
@@ -81,19 +83,16 @@ export const initialState = {
         'Absurdist',
         'other',
     ],
-    content: "<p>Start writing...</p>",
+    content: editorDefaults.defaultContent,
     completions: [],
-    currentFile: 'file1',
-    files: [
-        { name: 'file1', content: 'file1 content' },
-        { name: 'file2', content: 'file2 content' }, 
-        { name: 'file3', content: 'file3 content' }
-    ],
-    enableAI: false,
-    selectedLanguage: 'en',
-    selectedWordCount: '500',
-    selectedGenre: 'story',
-    selectedTheme: 'travel',
-    selectedStyle: 'Realist',
-    selectedPrompt: 'Write a story about animals.',
-};
+    completionsHistory: [],
+    currentFile: editorDefaults.currentFile,
+    files: editorDefaults.files,
+    enableAI: editorDefaults.enableAI,
+    selectedGenre: editorDefaults.selectedGenre,
+    selectedTheme: editorDefaults.selectedTheme,
+    selectedStyle: editorDefaults.selectedStyle,
+    selectedTab: editorDefaults.selectedTab,
+    selectedLanguage: editorDefaults.selectedLanguage,
+    selectedWordCount: editorDefaults.selectedWordCount,
+ };
