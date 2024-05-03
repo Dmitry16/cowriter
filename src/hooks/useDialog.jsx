@@ -15,7 +15,9 @@ const useDialog = () => {
         setOpen(false);
     };
 
-    const openDialog = ({ content }) => {
+    const openDialog = (content = '') => {
+        if (!content) return
+        
         setContent(content);
         setOpen(true);
     };

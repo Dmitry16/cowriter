@@ -81,9 +81,14 @@ export const initialState = {
         'Absurdist',
         'other',
     ],
-    // text: '',
     content: "<p>Start writing...</p>",
     completions: [],
+    currentFile: 'file1',
+    files: [
+        { name: 'file1', content: 'file1 content' },
+        { name: 'file2', content: 'file2 content' }, 
+        { name: 'file3', content: 'file3 content' }
+    ],
     enableAI: false,
     selectedLanguage: 'en',
     selectedWordCount: '500',

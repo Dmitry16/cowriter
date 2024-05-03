@@ -1,28 +1,22 @@
 import React from 'react';
-import { Box, Stack, Typography, List, ListItem, ListItemText, ListItemButton,
-    Accordion, AccordionSummary, AccordionDetails,
-} from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { styled } from '@mui/material/styles';
-import useDialog from '../hooks/useDialog';
-import ConstructionIcon from '@mui/icons-material/Construction';
-import UnderConstruction from '../components/UnderConstruction';
-import EditorControls from '../components/editor/EditorControls';
+import EditorControls from '../components/editor/controls/EditorControls';
 import Editor from '../components/editor/Editor';
 import Completions from '../components/Completions';
-
-const StyledListItem = styled(ListItem)(({ theme }) => ({
-    color: theme.palette.text.darkBlue,
-}));
+import Save from '../components/editor/controls/Save';
+import Open from '../components/editor/controls/Open';
 
 const Home = () => {
-    const [DialogComponent, openDialog] = useDialog();
-
     return (
         <Box sx={{}}>
             <EditorControls />
             <Completions />
             <Editor />
+            <Box sx={{ m: 1, display: 'flex', justifyContent: 'right' }}>
+                <Save />
+                <Open />
+            </Box>
         </Box>
     );
 };
