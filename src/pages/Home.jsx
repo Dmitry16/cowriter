@@ -6,6 +6,8 @@ import Editor from '../components/editor/Editor';
 import Completions from '../components/Completions';
 import Save from '../components/editor/controls/Save';
 import Open from '../components/editor/controls/Open';
+import CompletionsHistory from '../components/editor/controls/CompletionsHistory';
+import NewFile from '../components/editor/controls/NewFile';
 
 const Home = () => {
     return (
@@ -14,8 +16,10 @@ const Home = () => {
             <Completions />
             <Editor />
             <Box sx={{ m: 1, display: 'flex', justifyContent: 'right' }}>
+                <NewFile />
                 <Save />
                 <Open />
+                <CompletionsHistory />
             </Box>
         </Box>
     );

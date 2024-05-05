@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Box, Paper, Stack, Typography, List, ListItem, ListItemText, ListItemButton } from '@mui/material';
+import { Box, Paper, Button, Stack, Typography, List, ListItem, ListItemText, ListItemButton } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { styled } from '@mui/material/styles';
 
@@ -26,6 +26,17 @@ const Completions = () => {
         });
     };
 
+    const handleSave = () => {
+        const updatedState = {
+            ...state,
+            completionsHistory: state?.completionsHistory.length ?
+                [...state.completionsHistory, ...state.completions] : [...state.completions],
+        };
+
+        // localStorage.setItem('coWriterState', JSON.stringify(updatedState));
+        setState(updatedState);
+    };
+
     return (
             <Paper elevation={3}
                 sx={{m: 2, pt: 0,
@@ -41,6 +52,15 @@ const Completions = () => {
                         </StyledListItem>
                     ))}
                 </List>
+                {state.completions.length && (
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSave}
+                    >
+                        Save all completions
+                    </Button>
+                )}
             </Paper>
     );
 };
