@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Box, Paper, Button, Stack, Typography, List, ListItem, ListItemText, ListItemButton } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import useDialog from '../hooks/useDialog';
 import { styled } from '@mui/material/styles';
 
 import { CoWriterContext } from '../context'
@@ -15,13 +16,30 @@ const StyledListItem = styled(ListItem)(({ theme }) => ({
 }));
 
 const Completions = () => {
+    // const [DialogComponent, openDialog] = useDialog();
+    const [openDialogComponent, setOpenDialogComponent] = useState(false);
     const { state, setState } = useContext(CoWriterContext);
+    const { currentFile: currentFileName } = state;
+    const currentFile = state.files.find(file => file.name === currentFileName);
 
     const handleClick = (event) => {
         // console.log('Completions:::state.text:::', state.completions);
+        // if (openDialogComponent) {
+        //     setOpenDialogComponent(false);
+        //     return;
+        // };
+
         setState({
             ...state,
-            completions: [],
+            files: state.files.map(file => {
+                if (file.name === currentFileName) {
+                    return {
+                        ...file,
+                        completions: [],
+                    };
+                }
+                return file;
+            }),
             content: state.content + ' ' + event.target.innerText,
         });
     };
@@ -29,13 +47,23 @@ const Completions = () => {
     const handleSave = () => {
         const updatedState = {
             ...state,
-            completionsHistory: state?.completionsHistory.length ?
-                [...state.completionsHistory, ...state.completions] : [...state.completions],
+            files: state.files.map(file => {
+                if (file.name === currentFileName) {
+                    return {
+                        ...file,
+                        completionsHistory: file.completionsHistory?.length ?
+                            [...file.completionsHistory, ...file.completions] : [...file.completions],
+                    };
+                }
+                return file;
+            }),
         };
 
         // localStorage.setItem('coWriterState', JSON.stringify(updatedState));
         setState(updatedState);
     };
+
+    // No completions yet. Try enabling AI and write a couple of words.
 
     return (
             <Paper elevation={3}
@@ -46,13 +74,16 @@ const Completions = () => {
                 }}
             >
                 <List>
-                    {state.completions.map((completion, index) => (
-                        <StyledListItem key={index} onClick={handleClick}>
-                            <ListItemText primary={completion} />
-                        </StyledListItem>
-                    ))}
+                    {currentFile?.completions?.length ? currentFile.completions.map((completion, index) => (
+                        <ListItemButton key={index} onClick={handleClick}>
+                            <ListItem>
+                                <ListItemText primary={completion} />
+                            </ListItem>
+                        </ListItemButton>))
+                    : null} 
+                    {/* : openDialog('No completions yet. Try enabling AI and write a couple of words.')}  */}
                 </List>
-                {state.completions.length && (
+                {!!currentFile.completions?.length && (
                     <Button
                         variant="contained"
                         color="primary"
@@ -61,6 +92,7 @@ const Completions = () => {
                         Save all completions
                     </Button>
                 )}
+                {/* {openDialogComponent && <DialogComponent />} */}
             </Paper>
     );
 };

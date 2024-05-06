@@ -19,13 +19,6 @@ export const Editor = () => {
     const { state, setState } = useContext(CoWriterContext);
     const [content, setContent] = useState('');
 
-    useEffect(() => {
-        setState({
-            ...state,
-           firstEditorUpdate: true,
-        });
-    }, []); 
-
     const extensions = [
         Color.configure({ types: [TextStyle.name, ListItem.name] }),
         TextStyle.configure({ types: [ListItem.name] }),
@@ -43,8 +36,8 @@ export const Editor = () => {
 
     const editor = useEditor({
         extensions: extensions,
-        content: state.content,
-        onFocus({ editor }) {             
+        content: state?.content,
+        onFocus({ editor }) { 
             if (state.firstEditorUpdate && content === editorDefaults.content) {
                 editor.commands.setContent('');
                 setState({
@@ -64,8 +57,6 @@ export const Editor = () => {
     const { selectedGenre: genre, selectedTheme: theme, selectedStyle: style, enableAI } = state; 
 
     useEffect(() => {
-        console.log('content:::', content);
-
         if (content === '' || state.firstEditorUpdate || state.content === content) {
             console.log('content is empty or firstEditorUpdate is true or state.content is equal to content');
             return;
@@ -93,7 +84,16 @@ export const Editor = () => {
             .then((response) => {
                 setState({
                     ...state,
-                    completions: response.choices[0].message.content.split('\n'),
+                    // completions: response.choices[0].message.content.split('\n'),
+                    files: state.files.map(file => {
+                        if (file.name === state.currentFile) {
+                            return {
+                                ...file,
+                                completions: response.choices[0].message.content.split('\n'),
+                            };
+                        }
+                        return file;
+                    }),
                 })
             })
             .catch((error) => {
@@ -133,13 +133,13 @@ export const Editor = () => {
         return null;
     };
 
-    const stats = splitLinesAndConvertTagsToReactComponents(
+    const info = splitLinesAndConvertTagsToReactComponents(
         `file: <b>${state.currentFile}</b>, genre: <b>${state.selectedGenre}</b>, theme: <b>${state.selectedTheme}</b>, style: <b>${state.selectedStyle}</b>`
     );
 
   return (
     <Box sx={{m: 2}}>
-        {stats}
+        {info}
         <MenuBar editor={editor} />
         <EditorContent editor={editor} />
     </Box>
