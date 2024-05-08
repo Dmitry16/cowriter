@@ -9,14 +9,14 @@ const Save = () => {
     const [DialogComponent, openDialog] = useDialog();
     const [save, setSave] = useState(false);
 
-    console.log('Save:::state:::', state);
+    // console.log('Save:::state:::', state);
 
     const handleClick = () => {
         setSave(!save);
     };
     
     const handleListItemClick = (event) => {
-        console.log('Save:::event.target.innerText:::', event.target.innerText);
+        // console.log('Save:::event.target.innerText:::', event.target.innerText);
 
         const updatedState = {
             ...state,

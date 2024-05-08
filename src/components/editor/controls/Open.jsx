@@ -18,10 +18,12 @@ const Open = () => {
     };
     
     const handleListItemClick = (event) => {
-        setState({
+        const updatedState = {
             ...state,
             currentFile: state.files.find(file => file.name === event.target.innerText).name,
-        });
+        };
+        localStorage.setItem('coWriterState', JSON.stringify(updatedState));
+        setState(updatedState);
         setOpen(false);
     };
     
