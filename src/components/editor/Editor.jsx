@@ -19,12 +19,12 @@ export const Editor = () => {
     const { state, setState } = useContext(CoWriterContext);
     const [content, setContent] = useState('');
 
-    useEffect(() => {
-        setState({
-            ...state,
-           firstEditorUpdate: true,
-        });
-    }, []); 
+    // useEffect(() => {
+    //     setState({
+    //         ...state,
+    //        firstEditorUpdate: true,
+    //     });
+    // }, []); 
 
     const extensions = [
         Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -43,13 +43,24 @@ export const Editor = () => {
 
     const editor = useEditor({
         extensions: extensions,
-        content: state.content,
-        onFocus({ editor }) {             
-            if (state.firstEditorUpdate && content === editorDefaults.content) {
+        content: state?.content,
+        onFocus({ editor }) {
+            const currentEditorContent = editor.getHTML();
+            // console.log('Editor:::content:::', content);
+
+ 
+            if (state.firstEditorUpdate && currentEditorContent === editorDefaults.content) {
                 editor.commands.setContent('');
                 setState({
                     ...state,
-                    content: content,
+                    content: currentEditorContent,
+                    firstEditorUpdate: false
+                });
+            }
+            if (state.firstEditorUpdate && currentEditorContent !== editorDefaults.content) {
+                setState({
+                    ...state,
+                    // content: currentEditorContent,
                     firstEditorUpdate: false
                 });
             }
@@ -64,14 +75,19 @@ export const Editor = () => {
     const { selectedGenre: genre, selectedTheme: theme, selectedStyle: style, enableAI } = state; 
 
     useEffect(() => {
-        console.log('content:::', content);
+        console.log('useEffect:::111:::state:::', state);
 
-        if (content === '' || state.firstEditorUpdate || state.content === content) {
+        const currentContent = editor?.getHTML();
+
+        // console.log('useEffect:::222:::state.content:::', state.content);
+        // console.log('useEffect:::333:::currentContent:::', currentContent);
+
+
+        // if (content === '' || state.firstEditorUpdate || state.content === currentContent) {
+        if (content === '' || state.firstEditorUpdate || state.content === currentContent) {
             console.log('content is empty or firstEditorUpdate is true or state.content is equal to content');
             return;
         }
-
-        const currentContent = editor.getHTML();
 
         setState({
             ...state,
@@ -93,7 +109,16 @@ export const Editor = () => {
             .then((response) => {
                 setState({
                     ...state,
-                    completions: response.choices[0].message.content.split('\n'),
+                    // completions: response.choices[0].message.content.split('\n'),
+                    files: state.files.map(file => {
+                        if (file.name === state.currentFile) {
+                            return {
+                                ...file,
+                                completions: response.choices[0].message.content.split('\n'),
+                            };
+                        }
+                        return file;
+                    }),
                 })
             })
             .catch((error) => {
@@ -133,13 +158,13 @@ export const Editor = () => {
         return null;
     };
 
-    const stats = splitLinesAndConvertTagsToReactComponents(
+    const info = splitLinesAndConvertTagsToReactComponents(
         `file: <b>${state.currentFile}</b>, genre: <b>${state.selectedGenre}</b>, theme: <b>${state.selectedTheme}</b>, style: <b>${state.selectedStyle}</b>`
     );
 
   return (
     <Box sx={{m: 2}}>
-        {stats}
+        {info}
         <MenuBar editor={editor} />
         <EditorContent editor={editor} />
     </Box>

@@ -16,7 +16,15 @@ export default function App() {
   useEffect(() => {
     const localStorageState = JSON.parse(localStorage.getItem('coWriterState'));
     if (localStorageState) {      
-      setState(localStorageState);
+      setState({
+        ...state,
+        files: localStorageState.files,
+        currentFile: localStorageState.currentFile,
+        content: localStorageState.content,
+        completions: localStorageState.completions,
+        completionsHistory: localStorageState.completionsHistory,
+        enableAI: localStorageState.enableAI,
+      });
     }
   }, []);
 

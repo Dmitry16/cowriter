@@ -9,7 +9,7 @@ const NewFile = () => {
     const [DialogComponent, openDialog] = useDialog();
     const [newFile, setNewFile] = useState(false);
 
-    console.log('NewFile:::state:::', state);
+    // console.log('NewFile:::state:::', state);
 
     const handleClick = () => {
         // setNewFile(!newFile);
