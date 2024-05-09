@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Box, Typography, Button, TextField, List, ListItemButton, ListItem, ListItemText } from '@mui/material';
 import { CoWriterContext } from '../../../context';
 import useDialog from '../../../hooks/useDialog';
+import { editorDefaults } from '../../../constants/editorDefaults';
 
 const NewFile = () => {
     const { state, setState } = useContext(CoWriterContext);
@@ -9,7 +10,7 @@ const NewFile = () => {
     const [DialogComponent, openDialog] = useDialog();
     const [newFile, setNewFile] = useState(false);
 
-    // console.log('NewFile:::state:::', state);
+    // console.log('NewFile:::editorDefaults:::', editorDefaults);
 
     const handleClick = () => {
         // setNewFile(!newFile);
@@ -19,7 +20,17 @@ const NewFile = () => {
         const newFileName = document.getElementById('new-file').value;
         const updatedState = {
             ...state,
-            files: [...state.files, { name: newFileName, content: '' }],
+            files: [...state.files, {
+                name: newFileName,
+                content: editorDefaults.content,
+                completions: [],
+                completionsHistory: [],
+                genre: editorDefaults.file.genre,
+                language: editorDefaults.file.language,
+                theme: editorDefaults.file.theme,
+                style: editorDefaults.file.style,
+                tab: editorDefaults.file.tab,
+            }],
             currentFile: newFileName,
         };
 

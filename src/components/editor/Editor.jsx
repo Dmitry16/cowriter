@@ -17,14 +17,11 @@ import './styles.scss';
 
 export const Editor = () => {
     const { state, setState } = useContext(CoWriterContext);
-    const [content, setContent] = useState('');
+    const currentFile = state.files.find(file => file.name === state.currentFile);
+    
+    // console.log('Editor:::currentFile:::', currentFile);
 
-    // useEffect(() => {
-    //     setState({
-    //         ...state,
-    //        firstEditorUpdate: true,
-    //     });
-    // }, []); 
+    const [content, setContent] = useState('');
 
     const extensions = [
         Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -46,14 +43,13 @@ export const Editor = () => {
         content: state?.content,
         onFocus({ editor }) {
             const currentEditorContent = editor.getHTML();
-            // console.log('Editor:::content:::', content);
-
- 
-            if (state.firstEditorUpdate && currentEditorContent === editorDefaults.content) {
+            // console.log('Editor:::firstEditorUpdate:::', state.firstEditorUpdate);            
+            
+            if (currentEditorContent === editorDefaults.content) {
                 editor.commands.setContent('');
                 setState({
                     ...state,
-                    content: currentEditorContent,
+                    content: '',
                     firstEditorUpdate: false
                 });
             }
@@ -75,15 +71,9 @@ export const Editor = () => {
     const { selectedGenre: genre, selectedTheme: theme, selectedStyle: style, enableAI } = state; 
 
     useEffect(() => {
-        console.log('useEffect:::111:::state:::', state);
-
         const currentContent = editor?.getHTML();
+        // console.log('useEffect:::111:::state:::', state);
 
-        // console.log('useEffect:::222:::state.content:::', state.content);
-        // console.log('useEffect:::333:::currentContent:::', currentContent);
-
-
-        // if (content === '' || state.firstEditorUpdate || state.content === currentContent) {
         if (content === '' || state.firstEditorUpdate || state.content === currentContent) {
             console.log('content is empty or firstEditorUpdate is true or state.content is equal to content');
             return;
@@ -159,7 +149,7 @@ export const Editor = () => {
     };
 
     const info = splitLinesAndConvertTagsToReactComponents(
-        `file: <b>${state.currentFile}</b>, genre: <b>${state.selectedGenre}</b>, theme: <b>${state.selectedTheme}</b>, style: <b>${state.selectedStyle}</b>`
+        `file: <b>${currentFile.name}</b>, genre: <b>${currentFile.genre}</b>, theme: <b>${currentFile.theme}</b>, style: <b>${currentFile.style}</b>`
     );
 
   return (

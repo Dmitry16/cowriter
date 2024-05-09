@@ -4,7 +4,12 @@ import { CoWriterContext } from '../../../context';
 
 const EditorControls = () => {
     const { state, setState } = useContext(CoWriterContext);
-        // console.log('EditorControls:::state:enableAI::', state.enableAI); 
+    console.log('EditorControls:::state::', state);
+
+    const currentFile = state.files?.find(file => file.name === state.currentFile); 
+
+    // console.log('EditorControls:::state::', state);
+
     const [selectedTab, setSelectedTab] = useState('genres');
     
     const handleTabChange = (event, newValue) => {
@@ -18,12 +23,23 @@ const EditorControls = () => {
     );
 
     const handleSelectChange = ({ target: { value }}) => {
-        setState({
+        const updatedState = {
             ...state,
-            selectedGenre: selectedTab === 'genres' ? value : state.selectedGenre,
-            selectedTheme: selectedTab === 'themes' ? value : state.selectedTheme,
-            selectedStyle: selectedTab === 'styles' ? value : state.selectedStyle,
-        });
+            files: state.files.map(file => {
+                if (file.name === currentFile.name) {
+                    return {
+                        ...file,
+                        // [selectedTab]: value,
+                        genre: selectedTab === 'genres' ? value : file.genre,
+                        theme: selectedTab === 'themes' ? value : file.theme,
+                        style: selectedTab === 'styles' ? value : file.style,
+                    };
+                }
+                return file;
+            }),
+        };
+        localStorage.setItem('coWriterState', JSON.stringify(updatedState)); 
+        setState(updatedState);
     };
 
     return (
@@ -56,7 +72,7 @@ const EditorControls = () => {
                     <Select
                         labelId={`select-${selectedTab}`}
                         id={`select-${selectedTab}`}
-                        value={selectedTab === 'genres' ? state.selectedGenre : selectedTab === 'themes' ? state.selectedTheme : state.selectedStyle}
+                        value={selectedTab === 'genres' ? currentFile.genre : selectedTab === 'themes' ? currentFile.theme : currentFile.style}
                         label={`Select a ${selectedTab}`}
                         onChange={handleSelectChange}
                     >
